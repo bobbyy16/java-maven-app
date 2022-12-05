@@ -6,9 +6,9 @@ def buildJar() {
 def buildImage() {
     echo "building the docker image"
     withCredentials([usernamePassword(credentialsId: 'dockerhubcredential, passwordVariable:'PASS', usernameVariable: 'USER' )]){
-    sh "docker build -t bobbyy16/java-maven-app:2.0 ."
+    sh "docker build -t bobbyy16/my-pipeline:1.0 ."
     sh "echo $PASS | docker login -u $USER --password-stdin"
-    sh "docker push bobbyy16/java-maven-app:2.0"
+    sh "docker push bobbyy16/my-pipeline:1.0"
    }
 } 
 
