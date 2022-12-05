@@ -1,35 +1,41 @@
-pipeline{
+#!/usr/bin/env groovy
+
+def gv
+
+pipeline {
     agent any
-    tools{
-        maven 'Maven-3.8.6'
+    tools {
+        maven 'Maven'
     }
-    stages{
-        stage("build jar"){
-            steps{
+    stages {
+        stage("init") {
+            steps {
                 script {
-                    echo "building the application"
-                    sh 'mvn package'
+                    gv = load "script.groovy"
                 }
             }
         }
-        stage("build iamge"){
-            steps{
+        stage("build jar") {
+            steps {
                 script {
-                    echo "building the docker image"
-                    withCredentials([usernamePassword(credentialsId: 'dockerhubcredential, passwordVariable:'PASS', usernameVariable: 'USER' )]){
-                        sh "docker build -t bobbyy16/java-maven-app:2.0 ."
-                        sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh "docker push bobbyy16/java-maven-app:2.0"
-                }
+                    gv.buildJar()
                 }
             }
         }
-        stage("deploy"){
-            steps{
+        stage("build image") {
+            steps {
                 script {
-                    echo "deploying the application"
+                    gv.buildImage()
+                }
+            }
+        }
+        stage("deploy") {
+            steps {
+                script {
+                    gv.deployApp()
                 }
             }
         }
     }
 }
+
