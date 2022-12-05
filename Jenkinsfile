@@ -16,16 +16,11 @@ pipeline{
             steps{
                 script {
                     echo "building the docker image"
-
-                    withCredentials([usernamePassword(
-                    CredentialsId: 'docker-hub-repo',
-                    passwordVariable: 'PASS',
-                    usernameVariable: 'USER'
-                    )]) {
-                        sh 'docker build -t bobbyy16/java-maven-app:1.2 .'
+                    withCredentials([usernamePassword(credentialsId: 'dockerhubcredential, passwordVariable:'PASS', usernameVariable: 'USER' )]){
+                        sh "docker build -t bobbyy16/java-maven-app:2.0 ."
                         sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh 'docker push bobbyy16/java-maven-app:1.2'
-                    }
+                        sh "docker push bobbyy16/java-maven-app:2.0"
+                }
                 }
             }
         }
