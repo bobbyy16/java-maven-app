@@ -9,31 +9,38 @@ pipeline {
         maven 'Maven'
     }
     stages {
-//         stage("init") {
-//             steps {
-//                 script {
-//                     gv = load "script.groovy"
-//                 }
-//             }
-//         }
-        stage("build jar") {
+        stage("init") {
             steps {
                 script {
-                    gv.buildJar()
+                    gv = load "script.groovy"
                 }
             }
         }
         stage("build image") {
             steps {
                 script {
-                    gv.buildImage()
+                    buildImage 'bobbyy16/java-maven-app:2.0'
                 }
             }
         }
-        stage("deploy") {
+        stage("build jar") {
             steps {
                 script {
-                    gv.deployApp()
+                    buildJar()
+                }
+            }
+        }
+        stage("dockerlogin") {
+            steps {
+                script {
+                    dockerLogin()
+                }
+            }
+        }
+        stage("dockerPush") {
+            steps {
+                script {
+                    dockerPush()
                 }
             }
         }
