@@ -62,7 +62,7 @@ pipeline{
                 }
           }
         }
-        // stage('commit version update'){
+        // stage('commit version update'){.
         //     steps{
         //         script{
         //               withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable:'PASS', usernameVariable: 'USER' )]){
